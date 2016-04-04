@@ -9,8 +9,8 @@
     .func main
    
 main:
-    BL  _prompt1            @ branch to prompt1 procedure with return
-    BL  _scanf              @ branch to scanf procedure with return
+    	BL  _prompt1            @ branch to prompt1 procedure with return
+    	BL  _scanf              @ branch to scanf procedure with return
 	MOV R4, R0				@ move return value R0 to argument register R4
 	MOV R1, R0              @ move return value R0 to argument register R1
 	BL	_printf				@ print the value entered by the user
@@ -18,7 +18,7 @@ main:
 	BL  _getchar            @ branch to scanf procedure with return
 	MOV R5, R0				@ move return value R0 to argument register R5	
 	BL  _prompt1            @ branch to prompt1 procedure with return
-    BL  _scanf              @ branch to scanf procedure with return
+    	BL  _scanf              @ branch to scanf procedure with return
 	MOV R6, R0				@ move return value R0 to argument register R6    
 	MOV R1, R0              @ move return value R0 to argument register R3
 	BL	_printf	
@@ -32,35 +32,35 @@ main:
 
 _print_val:
 	MOV R7, LR          	@ store LR since printf call overwrites
-    LDR R0,=result_str  	@ string at label resultstr:    
+    	LDR R0,=result_str  	@ string at label resultstr:    
 	BL printf           	@ call printf, where R1 is the print argument
-    MOV LR, R7         		@ restore LR from R4
-    MOV PC, LR          	@ return
+    	MOV LR, R7         		@ restore LR from R4
+    	MOV PC, LR          	@ return
    
 _scanf:
-    MOV R7, LR              @ store LR since scanf call overwrites
-    SUB SP, SP, #4          @ make room on stack
-    LDR R0, =format_str     @ R0 contains address of format string
-    MOV R1, SP              @ move SP to R1 to store entry on stack
-    BL scanf                @ call scanf
-    LDR R0, [SP]            @ load value at SP into R0
-    ADD SP, SP, #4          @ restore the stack pointer
-    MOV PC, R7              @ return 
+    	MOV R7, LR              @ store LR since scanf call overwrites
+    	SUB SP, SP, #4          @ make room on stack
+    	LDR R0, =format_str     @ R0 contains address of format string
+    	MOV R1, SP              @ move SP to R1 to store entry on stack
+    	BL scanf                @ call scanf
+    	LDR R0, [SP]            @ load value at SP into R0
+    	ADD SP, SP, #4          @ restore the stack pointer
+    	MOV PC, R7              @ return 
 
 _printf:
-    MOV R7, LR              @ store LR since printf call overwrites
-    LDR R0, =printf_str     @ R0 contains formatted string address
-    MOV R1, R1              @ R1 contains printf argument (redundant line)
-    BL printf               @ call printf
-    MOV PC, R7              @ return
+    	MOV R7, LR              @ store LR since printf call overwrites
+    	LDR R0, =printf_str     @ R0 contains formatted string address
+    	MOV R1, R1              @ R1 contains printf argument (redundant line)
+    	BL printf               @ call printf
+    	MOV PC, R7              @ return
 
 _prompt1:
-    MOV R7, #4              @ write syscall, 4
-    MOV R0, #1              @ output stream to monitor, 1
-    MOV R2, #17             @ print string length
-    LDR R1, =prompt1_str    @ string at label prompt_str:
-    SWI 0                   @ execute syscall
-    MOV PC, LR              @ return
+    	MOV R7, #4              @ write syscall, 4
+    	MOV R0, #1              @ output stream to monitor, 1
+    	MOV R2, #17             @ print string length
+    	LDR R1, =prompt1_str    @ string at label prompt_str:
+    	SWI 0                   @ execute syscall
+    	MOV PC, LR              @ return
 
 _prompt2:
     MOV R7, #4              @ write syscall, 4
@@ -82,13 +82,13 @@ _getchar:
  
 _compare:
 	MOV R7,LR
-    CMP R2, #'+'            @ compare against the constant char '+'
+    	CMP R2, #'+'            @ compare against the constant char '+'
 	BLEQ _add				@ branch if equal to add with return
 	CMP R2, #'-'            @ compare against the constant char '-'
 	BLEQ _sub				@ branch if equal to add with return
 	CMP R2, #'*'            @ compare against the constant char '*'
 	BLEQ _mul				@ branch if equal to add with return    
-    CMP R2, #'M'			@ compare against the constant char 'M'
+    	CMP R2, #'M'			@ compare against the constant char 'M'
 	BLEQ	_max				@ branch if equal to add with return
 	MOV PC, R7				@ return
 
