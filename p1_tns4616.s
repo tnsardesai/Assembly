@@ -12,16 +12,12 @@ main:
     	BL  _prompt1            @ branch to prompt1 procedure with return
     	BL  _scanf              @ branch to scanf procedure with return
 	MOV R4, R0				@ move return value R0 to argument register R4
-	MOV R1, R0              @ move return value R0 to argument register R1
-	BL	_printf				@ print the value entered by the user
 	BL	_prompt2			@ branch to prompt2 procedure with return
 	BL  _getchar            @ branch to scanf procedure with return
 	MOV R5, R0				@ move return value R0 to argument register R5	
 	BL  _prompt1            @ branch to prompt1 procedure with return
     	BL  _scanf              @ branch to scanf procedure with return
 	MOV R6, R0				@ move return value R0 to argument register R6    
-	MOV R1, R0              @ move return value R0 to argument register R3
-	BL	_printf	
 	MOV	R1,R4				@ move return value R0 to argument register R1
 	MOV R2,R5				@ move return value R0 to argument register R1
 	MOV R3,R6    			@ move return value R0 to argument register R1
@@ -31,28 +27,31 @@ main:
 	B   main                @ branch back to start of main for infinite loop
 
 _print_val:
-	MOV R7, LR          	@ store LR since printf call overwrites
+	PUSH {LR}          	@ store LR since printf call overwrites
     	LDR R0,=result_str  	@ string at label resultstr:    
 	BL printf           	@ call printf, where R1 is the print argument
     	MOV LR, R7         		@ restore LR from R4
+    	POP {LR}
     	MOV PC, LR          	@ return
    
 _scanf:
-    	MOV R7, LR              @ store LR since scanf call overwrites
+    	PUSH {LR}               @ store LR since scanf call overwrites
     	SUB SP, SP, #4          @ make room on stack
     	LDR R0, =format_str     @ R0 contains address of format string
     	MOV R1, SP              @ move SP to R1 to store entry on stack
     	BL scanf                @ call scanf
     	LDR R0, [SP]            @ load value at SP into R0
     	ADD SP, SP, #4          @ restore the stack pointer
-    	MOV PC, R7              @ return 
+    	POP {LR}
+    	MOV PC, LR              @ return 
 
 _printf:
-    	MOV R7, LR              @ store LR since printf call overwrites
+    	PUSH {LR}              @ store LR since printf call overwrites
     	LDR R0, =printf_str     @ R0 contains formatted string address
     	MOV R1, R1              @ R1 contains printf argument (redundant line)
     	BL printf               @ call printf
-    	MOV PC, R7              @ return
+    	POP {LR}
+    	MOV PC, LR              @ return
 
 _prompt1:
     	MOV R7, #4              @ write syscall, 4
@@ -81,7 +80,7 @@ _getchar:
     MOV PC, LR              @ return
  
 _compare:
-	MOV R7,LR
+	PUSH {LR}
     	CMP R2, #'+'            @ compare against the constant char '+'
 	BLEQ _add				@ branch if equal to add with return
 	CMP R2, #'-'            @ compare against the constant char '-'
@@ -90,7 +89,8 @@ _compare:
 	BLEQ _mul				@ branch if equal to add with return    
     	CMP R2, #'M'			@ compare against the constant char 'M'
 	BLEQ	_max				@ branch if equal to add with return
-	MOV PC, R7				@ return
+	POP {LR}
+	MOV PC, LR				@ return
 
 _add:
 	MOV R0,R1				@ copy input register R1 to output R0
