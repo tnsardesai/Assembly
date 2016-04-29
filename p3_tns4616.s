@@ -15,7 +15,6 @@ main:
 	BL _generate
 	MOV R0, #0
 	BL _sort_ascending
-	@MOV R0, #0
 	BL _print_array
 	B _exit
 
@@ -88,9 +87,6 @@ done2:
 	LSLNE R9,R11,#2
 	ADDNE R9,R9,R3
 	STRNE R2,[R9]
-	PUSH {R0}
-	@BL _print_array
-	POP {R0}
 	ADD R0,R0,#1
 	B loop1
 	
