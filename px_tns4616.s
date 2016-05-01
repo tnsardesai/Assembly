@@ -1,7 +1,7 @@
 /******************************************************************************
-* @file p3_tns4616.s
-* @populate a array and then sort it in increasing order.
-*
+* @file px_tns4616.s
+* @final exam program
+* @make array of 10 integers with use input, find max,min,sum 
 * @author Tanmay Sardesai, 1001094616
 ******************************************************************************/
  
